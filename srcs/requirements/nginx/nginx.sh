@@ -2,7 +2,6 @@
 
 IMAGE_NAME="nginx_img"
 CONTAINER_NAME="nginx_cnt"
-IMAGE_NAME="nginx_img"
 
 OLD_CONTAINER_ID=$(docker ps -aq --filter "name=$CONTAINER_NAME")
 OLD_IMAGE_ID=$(docker images -q "$IMAGE_NAME")
@@ -19,4 +18,4 @@ fi
 
 docker build -t "$IMAGE_NAME" .
 
-docker run -it --name "$CONTAINER_NAME" -p 8443:443 "$IMAGE_NAME"
+docker run -it --name "$CONTAINER_NAME" -p 443:443 "$IMAGE_NAME"
