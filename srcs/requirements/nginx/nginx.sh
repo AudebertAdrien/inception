@@ -14,9 +14,9 @@ if [ -n "$OLD_CONTAINER_ID" ]; then
 fi
 
 if [ -n "$OLD_IMAGE_ID" ]; then
-    docker rmi "$OLD_IMAGE_ID" > /dev/null
+    docker rmi -f "$OLD_IMAGE_ID" > /dev/null
 fi
 
 docker build -t "$IMAGE_NAME" .
 
-docker run -it --name "$CONTAINER_NAME" -p 8080:8080 -p 8443:8443 "$IMAGE_NAME"
+docker run -it --name "$CONTAINER_NAME" -p 8443:443 "$IMAGE_NAME"
