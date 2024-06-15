@@ -1,55 +1,43 @@
 # version: "3.8"
 services:
   nginx-service:
-    build: ./srcs/requirements/nginx
-    image: ngix-img:latest
-    container_name: nginx-cnt
-    depends_on:
-      - wordpress
+    build: 
+      context: ./requirements/nginx 
+      dockerfile: Dockerfile
+    image: nginx_img
+    container_name: nginx_cnt
     ports:
       - 443:443
     networks:
-      - inception-network
+      - inception
 
   mariaDB-service-db:
-    build: ./srcs/requirements/mariaDB
-    image: mariaDB-img:latest
-    container_name: mariaDB-cnt
-    volumes:
-      - mariadb:/var/lib/mysql
-    networks:
-      - inception-network
+    build: 
+      context: ./requirements/mariaDB
+      dockerfile: Dockerfile
+    image: mariaDB_img
+    container_name: mariaDB_cnt
     expose:
       - :3000
+    networks:
+      - inception
+    volumes:
+      - /data/mysql
+    env_file: .env
+    restart: always
+
 
   wordpress-service:
-    build: ./srcs/requirements/wordpress
-    image: wordpress-img:latest
-    container_name: wordpress-cnt
-    depends_on:
-      - mariaDB-service-db
-    volumes:
-      - wordpress:/var/www/wordpress
-    networks:
-      - inception-network
+    build: 
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    image: wordpress_img
+    container_name: wordpress_cnt
     expose:
-      - "9000"
-
-  volumes:
-    wordpress:
-      driver: local
-      driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: '/home/aaudeber/data/wordpress'
-   mariadb:
-      driver: local
-      driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: '/home/aaudeber/data/mariadb'
-
-  networks:
-    inception-network:
-      name: inception-network
-      driver: bridge
+      - :9000
+    networks:
+      - inception
+    
+networks:
+  inception:
+    driver: bridge
