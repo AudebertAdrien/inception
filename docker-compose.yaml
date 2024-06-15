@@ -1,6 +1,8 @@
 # version: "3.8"
 services:
   nginx-service:
+    depends_on:
+      - wordpress-service
     build: 
       context: ./requirements/nginx 
       dockerfile: Dockerfile
@@ -11,23 +13,25 @@ services:
     networks:
       - inception
 
-  mariaDB-service-db:
+  mariadb-service-db:
     build: 
-      context: ./requirements/mariaDB
+      context: ./requirements/mariadb
       dockerfile: Dockerfile
-    image: mariaDB_img
-    container_name: mariaDB_cnt
+    image: mariadb_img
+    container_name: mariadb_cnt
     expose:
-      - :3000
+      - :3306
     networks:
       - inception
     volumes:
-      - /data/mysql
+      - /data/mysql:/var/lib/mysql
     env_file: .env
     restart: always
 
 
   wordpress-service:
+    depends_on:
+      - mariadb-service-db
     build: 
       context: ./requirements/wordpress
       dockerfile: Dockerfile
@@ -35,9 +39,12 @@ services:
     container_name: wordpress_cnt
     expose:
       - :9000
+    volumes:
+      - /data/html:/var/www/html
+    env_file: .env
     networks:
       - inception
-    
+
 networks:
   inception:
     driver: bridge
