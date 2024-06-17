@@ -12,6 +12,8 @@ services:
       - 443:443
     networks:
       - inception
+    restart: always
+
 
   mariadb-service-db:
     build: 
@@ -24,9 +26,8 @@ services:
     networks:
       - inception
     volumes:
-      - /data/mysql:/var/lib/mysql
+      - db_data:/var/lib/mysql
     env_file: .env
-    restart: always
 
 
   wordpress-service:
@@ -40,10 +41,25 @@ services:
     expose:
       - :9000
     volumes:
-      - /data/html:/var/www/html
+      - wp_data:/var/www/html
     env_file: .env
     networks:
       - inception
+    restart: always
+
+volumes:
+  db_data:
+    driver: local 
+    driver_opts:
+      type: none
+      device: /data/mysql
+      o: bind
+  wp_data:
+    driver: local 
+    driver_opts:
+      type: none
+      device: /data/html
+      o: bind
 
 networks:
   inception:
