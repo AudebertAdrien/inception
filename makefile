@@ -4,6 +4,7 @@ all: build up
 
 build:
 	@echo "Building Docker images..."
+	sudo mkdir -p /home/aaudeber/data/db /home/aaudeber/data/wp
 	sudo docker compose build
 
 up:
@@ -12,12 +13,11 @@ up:
 
 down:
 	@echo "Stopping Docker containers..."
-	sudo docker compose down
+	sudo docker compose -f ./docker-compose.yaml down --rmi all -v
 
 clean: down
 	@echo "Cleaning up Docker resources..."
-	sudo docker system prune -a
-	sudo docker volume rm -f $(docker volume ls -q)
+	sudo docker volume rm -f /home/aaudeber/data
 
 logs:
 	@echo "Displaying Docker logs..."

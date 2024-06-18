@@ -12,7 +12,7 @@ services:
       - 443:443
     networks:
       - inception
-    restart: always
+    restart: on-failure
 
 
   mariadb-service-db:
@@ -28,6 +28,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     env_file: .env
+    restart: on-failure
 
 
   wordpress-service:
@@ -45,20 +46,20 @@ services:
     env_file: .env
     networks:
       - inception
-    restart: always
+    restart: on-failure
 
 volumes:
   db_data:
     driver: local 
     driver_opts:
       type: none
-      device: /data/mysql
+      device: /home/aaudeber/data/db
       o: bind
   wp_data:
     driver: local 
     driver_opts:
       type: none
-      device: /data/html
+      device: /home/aaudeber/data/wp
       o: bind
 
 networks:

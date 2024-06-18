@@ -1,3 +1,5 @@
+[server]
+
 [mysqld]
 
 # Réglages de base
@@ -23,4 +25,10 @@ log_error = /var/log/mysql/error.log
 # Autres options personnalisées
 innodb_buffer_pool_size = 256M
 innodb_log_file_size = 64M
+
+[embedded]
+
+[mariadb]
+
+[mariadb-10.5]
 
