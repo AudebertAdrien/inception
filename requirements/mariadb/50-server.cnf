@@ -1,9 +1,7 @@
-[server]
-
 [mysqld]
 
 # Réglages de base
-user = mysql
+user = root 
 pid-file = /var/run/mysqld/mysqld.pid
 socket = /var/run/mysqld/mysqld.sock
 port = 3306
@@ -12,6 +10,9 @@ basedir = /usr
 datadir = /var/lib/mysql
 tmpdir = /tmp
 lc-messages-dir = /usr/share/mysql
+max_connections = 200
+query_cache_size = 64M
+skip-networking = false
 
 # Réglages de performance
 key_buffer_size = 16M
@@ -25,10 +26,3 @@ log_error = /var/log/mysql/error.log
 # Autres options personnalisées
 innodb_buffer_pool_size = 256M
 innodb_log_file_size = 64M
-
-[embedded]
-
-[mariadb]
-
-[mariadb-10.5]
-

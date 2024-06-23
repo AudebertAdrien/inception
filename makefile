@@ -1,26 +1,23 @@
-.PHONY: all build up down clean logs
+.PHONY: all build down clean logs
 
-all: build up
-
-build:
+all: build
 	@echo "Building Docker images..."
-	sudo mkdir -p /home/aaudeber/data/db /home/aaudeber/data/wp
-	sudo docker compose build
-
-up:
-	@echo "Starting Docker containers..."
-	sudo docker compose up -d
+	mkdir -p /home/aaudeber/data/db /home/aaudeber/data/wp
+	docker compose -f ./docker-compose.yaml up -d --build
 
 down:
 	@echo "Stopping Docker containers..."
-	sudo docker compose -f ./docker-compose.yaml down --rmi all -v
+	docker compose -f ./docker-compose.yaml down
 
-clean: down
+clean:
 	@echo "Cleaning up Docker resources..."
-	sudo docker volume rm -f /home/aaudeber/data
+	docker stop $$(docker ps -qa);\
+	docker rm $$(docker ps -qa);\
+	docker rmi $$(docker image ls -q);\
+	docker volume rm $$(docker volume ls -q);\
 
 logs:
 	@echo "Displaying Docker logs..."
-	sudo docker compose logs -f
+	docker compose logs -f
 
-re:	clean build up
+re:	clean build 
