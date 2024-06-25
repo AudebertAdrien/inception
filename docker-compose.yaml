@@ -1,3 +1,4 @@
+version: '3.5'
 services:
   nginx-service:
     depends_on:
@@ -20,8 +21,6 @@ services:
       dockerfile: Dockerfile
     image: mariadb_img
     container_name: mariadb_cnt
-    expose:
-      - :3306
     networks:
       - inception
     volumes:
@@ -38,8 +37,6 @@ services:
       dockerfile: Dockerfile
     image: wordpress_img
     container_name: wordpress_cnt
-    expose:
-      - :9000
     volumes:
       - wp_data:/var/www/html
     env_file: .env
@@ -52,15 +49,16 @@ volumes:
     driver: local 
     driver_opts:
       type: none
-      device: /home/aaudeber/data/db
+      device: /home/yorito/data/db
       o: bind
   wp_data:
     driver: local 
     driver_opts:
       type: none
-      device: /home/aaudeber/data/wp
+      device: /home/yorito/data/wp
       o: bind
 
 networks:
   inception:
+    name: inception
     driver: bridge

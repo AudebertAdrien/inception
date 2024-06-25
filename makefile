@@ -2,7 +2,7 @@
 
 all: build
 	@echo "Building Docker images..."
-	mkdir -p /home/aaudeber/data/db /home/aaudeber/data/wp
+	mkdir -p /home/yorito/data/db /home/yorito/data/wp
 	docker compose -f ./docker-compose.yaml up -d --build
 
 down:
@@ -20,4 +20,4 @@ logs:
 	@echo "Displaying Docker logs..."
 	docker compose logs -f
 
-re:	clean build 
+re:	down clean build 
