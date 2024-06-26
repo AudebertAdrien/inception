@@ -2,7 +2,7 @@
 
 all: build
 	@echo "Building Docker images..."
-	sudo mkdir -p /home/yorito/data/db /home/yorito/data/wp
+	sudo mkdir -p /home/motoko/data/db /home/motoko/data/wp
 	sudo docker compose -f ./docker-compose.yaml up -d --build
 
 down:

@@ -1,61 +1,58 @@
-version: '3.5'
 services:
-  nginx-service:
+  nginx:
     depends_on:
-      - wordpress-service
+      - wordpress
     build: 
       context: ./requirements/nginx 
       dockerfile: Dockerfile
-    image: nginx_img
-    container_name: nginx_cnt
+    image: nginx
+    container_name: nginx
     ports:
       - 443:443
     networks:
       - inception
-    restart: on-failure 
+    restart: always 
 
-
-  mariadb-service-db:
+  mariadb:
     build: 
       context: ./requirements/mariadb
       dockerfile: Dockerfile
-    image: mariadb_img
-    container_name: mariadb_cnt
+    image: mariadb
+    container_name: mariadb
     networks:
       - inception
     volumes:
       - db_data:/var/lib/mysql
     env_file: .env
-    restart: on-failure 
+    restart: always 
 
-
-  wordpress-service:
+  wordpress:
     depends_on:
-      - mariadb-service-db
+      - mariadb
     build: 
       context: ./requirements/wordpress
       dockerfile: Dockerfile
-    image: wordpress_img
-    container_name: wordpress_cnt
+    image: wordpress
+    container_name: wordpress
     volumes:
       - wp_data:/var/www/html
     env_file: .env
     networks:
       - inception
-    restart: on-failure
+    restart: always 
 
 volumes:
   db_data:
     driver: local 
     driver_opts:
       type: none
-      device: /home/yorito/data/db
+      device: /home/motoko/data/db
       o: bind
   wp_data:
     driver: local 
     driver_opts:
       type: none
-      device: /home/yorito/data/wp
+      device: /home/motoko/data/wp
       o: bind
 
 networks:
